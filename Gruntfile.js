@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 		'grunt-contrib-copy',
 		'grunt-contrib-uglify',
 		'grunt-contrib-watch',
-		'grunt-mocha-test',
+		'grunt-mocha-istanbul',
 		'grunt-replace',
 		'grunt-ssh',
 		'grunt-connect'
@@ -35,15 +35,23 @@ module.exports = function(grunt) {
 				dest: "<%= buildDir %>/js/animal.js"
 			}
 		},
-		mochaTest: {
-			test: {
+		mocha_istanbul: {
+			coverage: {
+				src: 'test',
 				options: {
-					reporter: 'spec',
-					captureFile: 'log/test_results.txt',
-					quiet: false,
-					// noFail: false
-				},
-				src: ['test/**/*.js']
+					mask: '**/*.spec.js'
+				}
+			}
+		},
+		istanbul_check_coverage: {
+			default: {
+				options: {
+					coverageFolder: 'coverage*',
+					check: {
+						lines: 80,
+						statements: 80
+					}
+				}
 			}
 		},
 		replace: {
@@ -113,6 +121,10 @@ module.exports = function(grunt) {
 		}
 	});
 	
+    grunt.event.on('coverage', function(lcovFileContents, done){
+        done();
+    });
+
 	gruntNpmTasks.forEach(function(task) {
 		grunt.loadNpmTasks(task);
 	});
@@ -130,7 +142,7 @@ module.exports = function(grunt) {
 		[
 			'default',
 			'uglify',
-			'mochaTest'
+			'mocha_istanbul'
 		]
 	);
 	
