@@ -17,8 +17,9 @@ var Animal = function(module) {
 	}
 	
 	Controller.prototype.move = function(axis, amount) {
-		var dir = axis || x;
-		this.position[dir] += this.speed * amount;
+		axis = axis || 'x';
+		amount = amount || 1;
+		this.position[axis] += this.speed * amount;
 		return this.position;
 	};
 	
