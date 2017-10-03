@@ -1,0 +1,45 @@
+
+[0m[0m
+[0m  Animal[0m
+[0m    default[0m
+[0m      create animal instance[0m
+      [32m  ✓[0m[90m should return an Animal Controller instance[0m
+[0m      initial properties and values[0m
+      [32m  ✓[0m[90m should have a default of 4 legs[0m
+      [32m  ✓[0m[90m should have a default speed of 10[0m
+      [32m  ✓[0m[90m should have a position property[0m
+      [32m  ✓[0m[90m should have a default x location of 0[0m
+      [32m  ✓[0m[90m should have a default y location of 0[0m
+      [31m  1) should have a default z location of 0[0m
+[0m      move[0m
+      [32m  ✓[0m[90m should move the animal x position 1 default unit when move() called with no args[0m
+[0m    custom[0m
+[0m      create animal instance[0m
+      [32m  ✓[0m[90m should return an Animal Controller instance[0m
+[0m      initial properties and values[0m
+      [32m  ✓[0m[90m should have a custom of 6 legs[0m
+      [32m  ✓[0m[90m should have a custom speed of 5[0m
+      [32m  ✓[0m[90m should have a position property[0m
+      [32m  ✓[0m[90m should have a custom x location of 1[0m
+      [32m  ✓[0m[90m should have a custom y location of 9[0m
+      [32m  ✓[0m[90m should have a custom z location of 10[0m
+[0m      move[0m
+      [32m  ✓[0m[90m should move the animal z position 5 custom units when move("z") called[0m
+
+
+[92m [0m[32m 15 passing[0m[90m (20ms)[0m
+[31m  1 failing[0m
+
+[0m  1) Animal default initial properties and values should have a default z location of 0:
+
+      [31mAssertionError: expected 0 to equal 1[0m
+      [32m+ expected[0m [31m- actual[0m
+
+      [31m-0[0m
+      [32m+1[0m
+      [0m[90m
+      at Context.<anonymous> (test/animal.spec.js:39:34)
+  
+[0m
+
+

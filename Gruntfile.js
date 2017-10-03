@@ -1,12 +1,15 @@
 module.exports = function(grunt) {
 	var srcDir = 'public/src';
 	var buildDir = 'public/build';
+	var testDir = 'test';
 	
 	var gruntNpmTasks = [
 		'grunt-contrib-clean',
 		'grunt-contrib-concat',
+		'grunt-contrib-copy',
 		'grunt-contrib-uglify',
 		'grunt-contrib-watch',
+		'grunt-mocha-test',
 		'grunt-replace',
 		'grunt-ssh',
 		'grunt-connect'
@@ -15,6 +18,8 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		srcDir: srcDir,
 		buildDir: buildDir,
+		testDir: testDir,
+		
 		clean: {
 			removeBuildDirs: ['<%= buildDir %>']
 		},
@@ -28,6 +33,17 @@ module.exports = function(grunt) {
 					"<%= srcDir %>/js/animal.js"
 				],
 				dest: "<%= buildDir %>/js/animal.js"
+			}
+		},
+		mochaTest: {
+			test: {
+				options: {
+					reporter: 'spec',
+					captureFile: 'log/test_results.txt',
+					quiet: false,
+					// noFail: false
+				},
+				src: ['test/**/*.js']
 			}
 		},
 		replace: {
@@ -60,12 +76,41 @@ module.exports = function(grunt) {
 				src: ['**/*.js', '!*.min.js'],
 				dest: '<%= buildDir %>/js/',
 				ext: '.min.js'
-			},
-			file: {
-				src: ['<%= opt %>.js'],
-				dest: '<%= opt %>.min.js'
 			}
 		},
+		copy: {
+			main: {
+				files: [
+					{
+						expand: true,
+						cwd: '<%= srcDir %>/',
+						src: [ '**/*.html' ],
+						dest: '<%= buildDir %>/'
+					}
+				]
+			}
+		},
+		watch: {
+			js: {
+				files: [
+					'<%= srcDir %>/js/**/*.js' 
+				],
+				tasks: ['build']
+			},
+			tests: {
+				files: [
+					'<%= testDir %>/js/**/*.js' 
+				],
+				tasks: ['mochaTest']
+			}
+		},
+		connect: {
+			dev: {
+				port: 7000,
+				base: 'public/',
+				keepAlive: true
+			}
+		}
 	});
 	
 	gruntNpmTasks.forEach(function(task) {
@@ -81,9 +126,21 @@ module.exports = function(grunt) {
 	);
 	
 	grunt.registerTask(
-		'build',
+		'test',
 		[
 			'default',
+			'uglify',
+			'mochaTest'
+		]
+	);
+	
+	grunt.registerTask(
+		'build',
+		[
+			'test',
+			'default',
+			'copy',
+			'replace',
 			'uglify'
 		]
 	);
@@ -91,9 +148,8 @@ module.exports = function(grunt) {
 	grunt.registerTask(
 		'deploy',
 		[
-			'default',
-			'replace',
-			'uglify'
+			'build',
+			// some stuff to get files to production server
 		]
 	);
 };
