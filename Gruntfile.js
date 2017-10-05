@@ -122,6 +122,7 @@ module.exports = function(grunt) {
 	});
 	
     grunt.event.on('coverage', function(lcovFileContents, done){
+		console.log('ON COVERAGE EVENT, lcovFileContents = ', lcovFileContents);
         done();
     });
 
